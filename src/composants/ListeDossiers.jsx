@@ -4,7 +4,6 @@ import * as crudDossiers from '../services/crud-dossiers';
 import { useState, useEffect } from 'react';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
@@ -22,7 +21,7 @@ export default function ListeDossiers({utilisateur, etatDossiers}) {
   // forcé par la mutation de l'état des dossiers
   useEffect(
     () => {
-      crudDossiers.lireTout(utilisateur.uid).then(
+      crudDossiers.lireTout(utilisateur.uid, "datemodif", "desc").then(
         dossiers => setDossiers(dossiers)
       )
     }, []
@@ -39,10 +38,10 @@ export default function ListeDossiers({utilisateur, etatDossiers}) {
 
   //Faire marcher le input
   const classes = useStyles();
-  const [age, setAge] = useState('');
+  const [tri, setTri] = useState();
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setTri(event.target.value);
   };
 
   /**
@@ -66,7 +65,7 @@ export default function ListeDossiers({utilisateur, etatDossiers}) {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={age}
+          value={tri}
           onChange={handleChange}
         >
           <MenuItem value={1}>Date de modification descendante</MenuItem>
