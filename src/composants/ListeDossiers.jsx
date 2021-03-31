@@ -2,6 +2,13 @@ import './ListeDossiers.scss';
 import Dossier from './Dossier';
 import * as crudDossiers from '../services/crud-dossiers';
 import { useState, useEffect } from 'react';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import { makeStyles } from '@material-ui/core/styles';
+
 
 export default function ListeDossiers({utilisateur, etatDossiers}) {
   // État des dossiers (vient du composant Appli)
@@ -20,6 +27,23 @@ export default function ListeDossiers({utilisateur, etatDossiers}) {
       )
     }, []
   );
+  const useStyles = makeStyles((theme) => ({
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 300,
+    },
+    selectEmpty: {
+      marginTop: theme.spacing(2),
+    },
+  }));
+
+  //Faire marcher le input
+  const classes = useStyles();
+  const [age, setAge] = useState('');
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
 
   /**
    * Gérer le clic du bouton 'supprimer' correspondant au dossier identifié en argument
@@ -37,6 +61,19 @@ export default function ListeDossiers({utilisateur, etatDossiers}) {
   
   return (
     <>
+    <FormControl className={classes.formControl}>
+        <InputLabel id="demo-simple-select-label">Tri de dossiers</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={age}
+          onChange={handleChange}
+        >
+          <MenuItem value={1}>Date de modification descendante</MenuItem>
+          <MenuItem value={2}>Nom de dossier ascendant</MenuItem>
+          <MenuItem value={3}>Nom de dossier descendant</MenuItem>
+        </Select>
+      </FormControl>
     <ul className="ListeDossiers">
       {
         (dossiers.length > 0) ?
